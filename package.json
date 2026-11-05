@@ -1,0 +1,64 @@
+{
+  "name": "quay",
+  "version": "1.2.0",
+  "private": true,
+  "description": "A local-first download and media workspace",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "concurrently -k \"vite --host 127.0.0.1\" \"wait-on tcp:5173 && electron .\"",
+    "build": "vite build && electron-builder --win",
+    "start": "electron .",
+    "typecheck": "tsc --noEmit",
+    "test": "node test/core.test.cjs && node test/dns-lookup.test.cjs && node test/inspection.test.cjs && node test/engine.test.cjs",
+    "test:electron-runtime": "electron test/electron-runtime.cjs",
+    "test:release-smoke": "node test/release-smoke.cjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
+    "ffmpeg-static": "^5.2.0",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "yt-dlp-wrap": "^2.3.12"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^7.0.2",
+    "vite": "^6.0.5",
+    "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "studio.nexus.playlistdownloader",
+    "productName": "Droplist",
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/ffmpeg-static/**"
+    ],
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "Droplist-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
